@@ -3,29 +3,27 @@
 # 交易所注册推荐码
 
 - OKEX 交易所注册推荐码, 手续费返佣20%
-   - https://www.okex.me/join/1847111798
+   - [https://www.okex.me/join/1847111798](https://www.okex.me/join/1847111798)
 
 - 币安现货推荐码：返佣20%
-   - https://www.binancezh.com/cn/register?ref=ESE80ESH
+   - [https://www.binancezh.com/cn/register?ref=ESE80ESH](https://www.binancezh.com/cn/register?ref=ESE80ESH)
 
 - 币安合约推荐码:返佣10%
-   - https://www.binancezh.com/cn/futures/ref/51bitquant
+   - [https://www.binancezh.com/cn/futures/ref/51bitquant](https://www.binancezh.com/cn/futures/ref/51bitquant)
 
 
 代码获取方式： 网易云课堂，或者联系bitquant51， 回复：网格交易代码
 网格交易: 适合币圈的高波动率的品种，适合现货， 如果交易合约，需要注意防止极端行情爆仓。
 
 ## 部署服务器
-购买服务器，可以参考一下链接: 
-通过这个网站注册购买服务器: https://passport.ucloud.cn/?invitation_code=C1x2EA81CD79B8C
-或者直接通过这个地址购买: https://www.ucloud.cn/site/global.html?invitation_code=C1x2EA81CD79B8C#dongjing
+参考我的博客
+- [https://www.jianshu.com/p/50fc54ca5ead](https://www.jianshu.com/p/50fc54ca5ead)
+- [https://www.jianshu.com/p/61cb2a24a658](https://www.jianshu.com/p/61cb2a24a658)
 
-# 购买地址
+## 服务器购买地址
+可以通过一下链接够买服务器，可以享受打折优惠
+- [https://www.ucloud.cn/site/global.html?invitation_code=C1x2EA81CD79B8C#dongjing](https://www.ucloud.cn/site/global.html?invitation_code=C1x2EA81CD79B8C#dongjing)
 
-https://www.ucloud.cn/site/global.html?invitation_code=C1x2EA81CD79B8C#dongjing
-
-# 博客地址
-https://www.jianshu.com/p/50fc54ca5ead
 
 # linux 常用命令
 
@@ -68,3 +66,8 @@ https://www.jianshu.com/p/50fc54ca5ead
 
 杀死进程, 关闭程序
 > kill <进程ID> 
+
+# 更多课程内容
+请参考网易云课堂的视频
+[网易云课堂链接](https://www.jianshu.com/go-wild?ac=2&url=https%3A%2F%2Fstudy.163.com%2Fcourse%2FcourseMain.htm%3FcourseId%3D1209509824%26share%3D2%26shareId%3D480000001919830)
+你也可以在网易云课堂直接搜索**51bitquant**可以找到课程视频。
