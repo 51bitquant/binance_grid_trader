@@ -19,6 +19,7 @@
 参考我的博客
 - [https://www.jianshu.com/p/50fc54ca5ead](https://www.jianshu.com/p/50fc54ca5ead)
 - [https://www.jianshu.com/p/61cb2a24a658](https://www.jianshu.com/p/61cb2a24a658)
+- [https://www.jianshu.com/p/8c1afcbbe722](https://www.jianshu.com/p/8c1afcbbe722)
 
 ## 服务器购买地址
 可以通过一下链接够买服务器，可以享受打折优惠
