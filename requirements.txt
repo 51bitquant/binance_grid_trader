@@ -71,7 +71,7 @@ decorator==4.4.0
 defusedxml==0.6.0
 Delorean==1.0.0
 distributed==2.1.0
-Django==1.11.4
+Django==1.11.29
 django-celery==3.3.1
 django-redis-sessions==0.6.1
 docopt==0.6.2
