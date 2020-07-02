@@ -37,7 +37,7 @@ billiard==3.3.0.23
 binance==0.3
 bitarray==0.9.3
 bkcharts==0.2
-bleach==3.1.0
+bleach==3.1.4
 blinker==1.4
 bokeh==1.2.0
 boto==2.49.0
