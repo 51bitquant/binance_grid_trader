@@ -1,0 +1,11 @@
+{
+  "platform": "binance_spot",
+  "symbol": "BNBUSDT",
+  "api_key": "lpTGriY93XrfJfCWatAuQRqXcSomJEN5rx38TIyphqCIF8A4HC274GtSAWQhMxW2",
+  "secret": "ZwvsZHMC7B0lX9kZuRquz7kK21zZlVSYu5dOcthc4iaJyvGd29sSNFryDDpYdj0Q",
+  "gap_percent": 0.003,
+  "quantity": 1,
+  "min_price": 0.0001,
+  "min_qty": 0.01,
+  "max_orders": 1
+}
