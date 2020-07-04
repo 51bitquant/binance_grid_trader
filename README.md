@@ -11,19 +11,25 @@
 - 币安合约推荐码:返佣10%
    - [https://www.binancezh.com/cn/futures/ref/51bitquant](https://www.binancezh.com/cn/futures/ref/51bitquant)
 
+#网格交易策略使用行情
+- 震荡行情
+- 适合币圈的高波动率的品种
+- 适合现货， 如果交易合约，需要注意防止极端行情爆仓。
 
-代码获取方式： 网易云课堂，或者联系bitquant51， 回复：网格交易代码
-网格交易: 适合币圈的高波动率的品种，适合现货， 如果交易合约，需要注意防止极端行情爆仓。
+# 服务器购买
+推荐ucloud的服务器
+- 价格便宜
+- 网络速度和性能还不错
+- 推荐链接如下：可以通过一下链接够买服务器，可以享受打折优惠:
 
-## 部署服务器
+[https://www.ucloud.cn/site/global.html?invitation_code=C1x2EA81CD79B8C#dongjing](https://www.ucloud.cn/site/global.html?invitation_code=C1x2EA81CD79B8C#dongjing)
+
+
+# 部署服务器
 参考我的博客
 - [https://www.jianshu.com/p/50fc54ca5ead](https://www.jianshu.com/p/50fc54ca5ead)
 - [https://www.jianshu.com/p/61cb2a24a658](https://www.jianshu.com/p/61cb2a24a658)
 - [https://www.jianshu.com/p/8c1afcbbe722](https://www.jianshu.com/p/8c1afcbbe722)
-
-## 服务器购买地址
-可以通过一下链接够买服务器，可以享受打折优惠
-- [https://www.ucloud.cn/site/global.html?invitation_code=C1x2EA81CD79B8C#dongjing](https://www.ucloud.cn/site/global.html?invitation_code=C1x2EA81CD79B8C#dongjing)
 
 
 # linux 常用命令
@@ -40,8 +46,7 @@
 - ps -ef | grep main.py    # 查看进程
 - kill 进程id  # 杀死当前进程
 
-
-## 部署
+# 部署
 直接把代码上传到服务器, 通过scp命令上传
 - 先把代码压缩一下
 - 通过一下命令上传到自己的服务器, **xxx.xxx.xxx.xxx**为你的服务器地址, **:/home/ubuntu**表示你上传到服务器的目录
