@@ -20,7 +20,7 @@
 推荐ucloud的服务器
 - 价格便宜
 - 网络速度和性能还不错
-- 推荐链接如下：可以通过一下链接够买服务器，可以享受打折优惠:
+- 推荐链接如下：可以通过下面链接够买服务器，可以享受打折优惠:
 
 [https://www.ucloud.cn/site/global.html?invitation_code=C1x2EA81CD79B8C#dongjing](https://www.ucloud.cn/site/global.html?invitation_code=C1x2EA81CD79B8C#dongjing)
 
@@ -75,5 +75,12 @@
 
 # 更多课程内容
 请参考网易云课堂的视频
-[网易云课堂链接](https://www.jianshu.com/go-wild?ac=2&url=https%3A%2F%2Fstudy.163.com%2Fcourse%2FcourseMain.htm%3FcourseId%3D1209509824%26share%3D2%26shareId%3D480000001919830)
-你也可以在网易云课堂直接搜索**51bitquant**可以找到课程视频。
+- [网易云课堂链接](https://www.jianshu.com/go-wild?ac=2&url=https%3A%2F%2Fstudy.163.com%2Fcourse%2FcourseMain.htm%3FcourseId%3D1209509824%26share%3D2%26shareId%3D480000001919830)
+- 你也可以在网易云课堂直接搜索**51bitquant**可以找到课程视频。
+# 联系我
+可以添加我的微信，如果你有什么量化问题、python学习、课程咨询等方面的问题，都可以咨询我。
+
+![51bitquant个人微信](https://upload-images.jianshu.io/upload_images/814550-f83c8302f2c4e344.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+
+
