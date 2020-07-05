@@ -1,5 +1,8 @@
 # 51bitquant网格交易策略
 
+网格交易的原理视频讲解链接:
+[https://www.bilibili.com/video/BV1Jg4y1v7vr/](https://www.bilibili.com/video/BV1Jg4y1v7vr/)
+
 # 交易所注册推荐码
 
 - OKEX 交易所注册推荐码, 手续费返佣20%
@@ -23,6 +26,9 @@
 - 推荐链接如下：可以通过下面链接够买服务器，可以享受打折优惠:
 
 [https://www.ucloud.cn/site/global.html?invitation_code=C1x2EA81CD79B8C#dongjing](https://www.ucloud.cn/site/global.html?invitation_code=C1x2EA81CD79B8C#dongjing)
+
+视频讲解如下:
+[https://www.bilibili.com/video/BV1eK4y147HT/](https://www.bilibili.com/video/BV1eK4y147HT/)
 
 
 # 部署服务器
@@ -72,6 +78,9 @@
 
 杀死进程, 关闭程序
 > kill <进程ID> 
+
+**linux服务器指令和网格策略实盘部署过程如下**
+[https://www.bilibili.com/video/BV1mK411n7JW/](https://www.bilibili.com/video/BV1mK411n7JW/)
 
 # 更多课程内容
 请参考网易云课堂的视频
