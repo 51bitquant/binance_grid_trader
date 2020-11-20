@@ -18,14 +18,14 @@
 """
 
 
-from gateway import BinanceSpotHttp, OrderStatus, OrderType, OrderSide
+from gateway import BinanceSpotHttp, BinanceFutureHttp, OrderStatus, OrderType, OrderSide
 from utils import config
 from utils import utility, round_to
 from enum import Enum
 import logging
 from datetime import datetime
 
-class BinanceTrader(object):
+class BinanceFutureTrader(object):
 
     def __init__(self):
         """
@@ -33,7 +33,7 @@ class BinanceTrader(object):
         :param secret:
         :param trade_type: 交易的类型， only support future and spot.
         """
-        self.http_client = BinanceSpotHttp(api_key=config.api_key, secret=config.secret)
+        self.http_client = BinanceFutureHttp(api_key=config.api_key, secret=config.secret)
 
         self.buy_orders = []  # 买单.
         self.sell_orders = [] # 卖单.
@@ -58,15 +58,12 @@ class BinanceTrader(object):
         """
 
         bid_price, ask_price = self.get_bid_ask_price()
-        print(f"bid_price: {bid_price}, ask_price: {ask_price}")
+        print(f"bid_price: {bid_price}, ask_price: {ask_price}, 时间: {datetime.now()}")
 
         quantity = round_to(float(config.quantity), float(config.min_qty))
 
         self.buy_orders.sort(key=lambda x: float(x['price']), reverse=True)  # 最高价到最低价.
         self.sell_orders.sort(key=lambda x: float(x['price']), reverse=True)  # 最高价到最低价.
-        print(f"buy orders: {self.buy_orders}")
-        print("------------------------------")
-        print(f"sell orders: {self.sell_orders}")
 
         buy_delete_orders = []  # 需要删除买单
         sell_delete_orders = [] # 需要删除的卖单
@@ -80,11 +77,11 @@ class BinanceTrader(object):
             if check_order:
                 if check_order.get('status') == OrderStatus.CANCELED.value:
                     buy_delete_orders.append(buy_order)
-                    print(f"buy order status was canceled: {check_order.get('status')}")
+                    print(f"buy order status was canceled: {check_order.get('status')}, 时间: {datetime.now()}")
                 elif check_order.get('status') == OrderStatus.FILLED.value:
                     # 买单成交，挂卖单.
+                    print(f"买单成交了, 时间: {datetime.now()}")
                     logging.info(f"买单成交时间: {datetime.now()}, 价格: {check_order.get('price')}, 数量: {check_order.get('origQty')}")
-
 
                     sell_price = round_to(float(check_order.get("price")) * (1 + float(config.gap_percent)), float(config.min_price))
 
@@ -94,23 +91,26 @@ class BinanceTrader(object):
 
                     new_sell_order = self.http_client.place_order(symbol=config.symbol, order_side=OrderSide.SELL, order_type=OrderType.LIMIT, quantity=quantity, price=sell_price)
                     if new_sell_order:
+                        print(f"买单成交，下了对应价格的卖单: {new_sell_order}, 时间: {datetime.now()}")
                         buy_delete_orders.append(buy_order)
                         self.sell_orders.append(new_sell_order)
 
                     buy_price = round_to(float(check_order.get("price")) * (1 - float(config.gap_percent)),
                                      config.min_price)
+
                     if buy_price > bid_price > 0:
                         buy_price = round_to(buy_price, float(config.min_price))
 
                     new_buy_order = self.http_client.place_order(symbol=config.symbol, order_side=OrderSide.BUY, order_type=OrderType.LIMIT, quantity=quantity, price=buy_price)
                     if new_buy_order:
+                        print(f"买单成交，下了更低价的买单: {new_buy_order}, 时间: {datetime.now()}")
                         self.buy_orders.append(new_buy_order)
 
 
                 elif check_order.get('status') == OrderStatus.NEW.value:
-                    print("buy order status is: New")
+                    print(f"buy order status is: New , 时间: {datetime.now()}")
                 else:
-                    print(f"buy order status is not above options: {check_order.get('status')}")
+                    print(f"buy order status is not above options: {check_order.get('status')}, 时间: {datetime.now()}")
 
         # 过期或者拒绝的订单删除掉.
         for delete_order in buy_delete_orders:
@@ -125,8 +125,9 @@ class BinanceTrader(object):
                 if check_order.get('status') == OrderStatus.CANCELED.value:
                     sell_delete_orders.append(sell_order)
 
-                    print(f"sell order status was canceled: {check_order.get('status')}")
+                    print(f"sell order status was canceled: {check_order.get('status')}, 时间: {datetime.now()}")
                 elif check_order.get('status') == OrderStatus.FILLED.value:
+                    print(f"卖单成交了, 时间: {datetime.now()}")
                     logging.info(
                         f"卖单成交时间: {datetime.now()}, 价格: {check_order.get('price')}, 数量: {check_order.get('origQty')}")
                     # 卖单成交，先下买单.
@@ -137,6 +138,7 @@ class BinanceTrader(object):
                     new_buy_order = self.http_client.place_order(symbol=config.symbol, order_side=OrderSide.BUY,
                                                              order_type=OrderType.LIMIT, quantity=quantity, price=buy_price)
                     if new_buy_order:
+                        print(f"卖单成交，下了对应价格的买单: {new_buy_order}, 时间: {datetime.now()}")
                         sell_delete_orders.append(sell_order)
                         self.buy_orders.append(new_buy_order)
 
@@ -150,12 +152,13 @@ class BinanceTrader(object):
                                                                  order_type=OrderType.LIMIT, quantity=quantity,
                                                                  price=sell_price)
                     if new_sell_order:
+                        print(f"卖单成交，下了更高价的卖单: {new_sell_order}, 时间: {datetime.now()}")
                         self.sell_orders.append(new_sell_order)
 
                 elif check_order.get('status') == OrderStatus.NEW.value:
-                    print("sell order status is: New")
+                    print(f"sell order status is: New, 时间: {datetime.now()}")
                 else:
-                    print(f"sell order status is not in above options: {check_order.get('status')}")
+                    print(f"sell order status is not in above options: {check_order.get('status')}, 时间: {datetime.now()}")
 
         # 过期或者拒绝的订单删除掉.
         for delete_order in sell_delete_orders:
@@ -165,33 +168,72 @@ class BinanceTrader(object):
         if len(self.buy_orders) <= 0:
             if bid_price > 0:
                 price = round_to(bid_price * (1 - float(config.gap_percent)), float(config.min_price))
+
                 buy_order = self.http_client.place_order(symbol=config.symbol,order_side=OrderSide.BUY, order_type=OrderType.LIMIT, quantity=quantity,price=price)
+                print(f'没有买单，根据盘口下买单: {buy_order}, 时间: {datetime.now()}')
                 if buy_order:
                     self.buy_orders.append(buy_order)
+        else:
+            self.buy_orders.sort(key=lambda x: float(x['price']), reverse=False) # 最低价到最高价
+            delete_orders = []
+            for i in range(len(self.buy_orders) -1):
+                order = self.buy_orders[i]
+                next_order = self.buy_orders[i+1]
 
-        elif len(self.buy_orders) > int(config.max_orders): # 最多允许的挂单数量.
-            # 订单数量比较多的时候.
-            self.buy_orders.sort(key=lambda x: float(x['price']), reverse=False)  # 最低价到最高价
+                if float(next_order['price'])/float(order['price']) - 1 < 0.001:
+                    print(f"买单之间价差太小，撤销订单：{next_order}, 时间: {datetime.now()}")
+                    cancel_order = self.http_client.cancel_order(next_order.get('symbol'),
+                                                          client_order_id=next_order.get('clientOrderId'))
+                    if cancel_order:
+                        delete_orders.append(next_order)
 
-            delete_order = self.buy_orders[0]
-            order = self.http_client.cancel_order(delete_order.get('symbol'), client_order_id=delete_order.get('clientOrderId'))
-            if order:
-                self.buy_orders.remove(delete_order)
+            for order in delete_orders:
+                self.buy_orders.remove(order)
+
+
+            if len(self.buy_orders) > int(config.max_orders): # 最多允许的挂单数量.
+                # 订单数量比较多的时候.
+                self.buy_orders.sort(key=lambda x: float(x['price']), reverse=False)  # 最低价到最高价
+
+                delete_order = self.buy_orders[0]
+                print(f"订单太多了，撤销最低价的买单：{delete_order}, 时间: {datetime.now()}")
+                order = self.http_client.cancel_order(delete_order.get('symbol'), client_order_id=delete_order.get('clientOrderId'))
+                if order:
+                    self.buy_orders.remove(delete_order)
 
         # 没有卖单的时候.
         if len(self.sell_orders) <= 0:
             if ask_price > 0:
                 price = round_to(ask_price * (1 + float(config.gap_percent)), float(config.min_price))
-                order = self.http_client.place_order(symbol=config.symbol,order_side=OrderSide.SELL, order_type=OrderType.LIMIT, quantity=quantity,price=price)
+                sell_order = self.http_client.place_order(symbol=config.symbol,order_side=OrderSide.SELL, order_type=OrderType.LIMIT, quantity=quantity,price=price)
+                print(f'没有卖单，根据盘口下卖单:{sell_order} , 时间: {datetime.now()}')
+                if sell_order:
+                    self.sell_orders.append(sell_order)
+
+        else:
+            self.sell_orders.sort(key=lambda x: float(x['price']), reverse=False)  # 最低价到最高价
+            delete_orders = []
+            for i in range(len(self.sell_orders) - 1):
+                order = self.sell_orders[i]
+                next_order = self.sell_orders[i + 1]
+
+                if float(next_order['price']) / float(order['price']) - 1 < 0.001:
+                    print(f"卖单之间价差太小，撤销订单:{next_order}, 时间: {datetime.now()}")
+                    cancel_order = self.http_client.cancel_order(next_order.get('symbol'),
+                                                                 client_order_id=next_order.get('clientOrderId'))
+                    if cancel_order:
+                        delete_orders.append(next_order)
+
+            for order in delete_orders:
+                self.sell_orders.remove(order)
+
+            if len(self.sell_orders) > int(config.max_orders): # 最多允许的挂单数量.
+                # 订单数量比较多的时候.
+                self.sell_orders.sort(key=lambda x: x['price'], reverse=True)  # 最高价到最低价
+
+                delete_order = self.sell_orders[0]
+                print(f"订单太多了，撤销最高价的卖单：{delete_order}, 时间:{datetime.now()}")
+                order = self.http_client.cancel_order(delete_order.get('symbol'),
+                                                      client_order_id=delete_order.get('clientOrderId'))
                 if order:
-                    self.sell_orders.append(order)
-
-        elif len(self.sell_orders) > int(config.max_orders): # 最多允许的挂单数量.
-            # 订单数量比较多的时候.
-            self.sell_orders.sort(key=lambda x: x['price'], reverse=True)  # 最高价到最低价
-
-            delete_order = self.sell_orders[0]
-            order = self.http_client.cancel_order(delete_order.get('symbol'),
-                                                  client_order_id=delete_order.get('clientOrderId'))
-            if order:
-                self.sell_orders.remove(delete_order)
+                    self.sell_orders.remove(delete_order)

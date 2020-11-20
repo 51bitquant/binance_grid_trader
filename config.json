@@ -1,11 +1,11 @@
 {
-  "platform": "binance_spot",
+  "platform": "binance_future",
   "symbol": "BNBUSDT",
-  "api_key": "lpTGriY93XrfJfCWatAuQRqXcSomJEN5rx38TIyphqCIF8A4HC274GtSAWQhMxW2",
-  "secret": "ZwvsZHMC7B0lX9kZuRquz7kK21zZlVSYu5dOcthc4iaJyvGd29sSNFryDDpYdj0Q",
+  "api_key": "3y2a3IGAqxCXVez2CdreG87EZy2ApLwC7svesTXxdepMKFmKQRdTIBXFSuEmPGhC",
+  "secret": "tpY5Khw9vmnPNnrvlAntN0DdRz1C0v97P1eParoFgjQoheYBoP7vEvEJ4wLnRZrv",
   "gap_percent": 0.003,
-  "quantity": 1,
-  "min_price": 0.0001,
+  "quantity": 20,
+  "min_price": 0.001,
   "min_qty": 0.01,
-  "max_orders": 1
+  "max_orders": 3
 }

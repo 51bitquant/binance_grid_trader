@@ -21,6 +21,7 @@
 import time
 import logging
 from trader.binance_trader import BinanceTrader
+from trader.binance_future_trader import BinanceFutureTrader
 from utils import config
 
 format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
@@ -31,16 +32,16 @@ if __name__ == '__main__':
 
 
     config.loads('./config.json')
-    binance_trader = BinanceTrader()
+    binance_trader = BinanceFutureTrader() # BinanceTrader()
     orders = binance_trader.http_client.cancel_open_orders(config.symbol)
     print(f"cancel orders: {orders}")
 
     while True:
         try:
             binance_trader.grid_trader()
-            time.sleep(120)
+            time.sleep(20)
 
         except Exception as error:
             print(f"catch error: {error}")
-            time.sleep(60)
+            time.sleep(5)
 

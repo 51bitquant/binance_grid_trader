@@ -31,6 +31,7 @@ import hmac
 import hashlib
 from enum import Enum
 from threading import Thread, Lock
+from datetime import datetime
 
 class OrderStatus(object):
     NEW              = "NEW"
@@ -83,14 +84,15 @@ class OrderSide(Enum):
 
 class BinanceFutureHttp(object):
 
-    def __init__(self, key=None, secret=None, host=None, timeout=5):
-        self.key = key
+    def __init__(self, api_key=None, secret=None, host=None, timeout=5, try_counts=5):
+        self.key = api_key
         self.secret = secret
         self.host = host if host else "https://fapi.binance.com"
         self.recv_window = 5000
         self.timeout = timeout
         self.order_count_lock = Lock()
         self.order_count = 1_000_000
+        self.try_counts = try_counts  # 失败尝试的次数.
 
     def build_parameters(self, params: dict):
         keys = list(params.keys())
@@ -108,7 +110,18 @@ class BinanceFutureHttp(object):
         # print(url)
         headers = {"X-MBX-APIKEY": self.key}
 
-        return requests.request(req_method.value, url=url, headers=headers, timeout=self.timeout).json()
+        # return requests.request(req_method.value, url=url, headers=headers, timeout=self.timeout).json()
+
+        for i in range(0, self.try_counts):
+            try:
+                response = requests.request(req_method.value, url=url, headers=headers, timeout=self.timeout)
+                if response.status_code == 200:
+                    return response.json()
+                else:
+                    print(f"请求没有成功: {response.status_code}, 继续尝试请求")
+            except Exception as error:
+                print(f"请求:{path}, 发生了错误: {error}, 时间: {datetime.now()}")
+                time.sleep(3)
 
     def server_time(self):
         path = '/fapi/v1/time'
@@ -226,7 +239,7 @@ class BinanceFutureHttp(object):
     def order_id(self):
         return str(self._timestamp() + self._new_order_id())
 
-    def place_order(self, symbol: str, side: OrderSide, order_type:OrderType, quantity, price, client_prefix=None, time_inforce="GTC", recvWindow=5000, stop_price=0):
+    def place_order(self, symbol: str, order_side: OrderSide, order_type:OrderType, quantity, price, time_inforce="GTC", recvWindow=5000, stop_price=0):
 
         """
         下单..
@@ -250,11 +263,12 @@ class BinanceFutureHttp(object):
 
         params = {
             "symbol": symbol,
-            "side": side.value,
+            "side": order_side.value,
             "type": order_type.value,
             "quantity": quantity,
             "price": price,
             "recvWindow": recvWindow,
+            "timeInForce": "GTC",
             "timestamp": self._timestamp()
         }
 
@@ -273,19 +287,20 @@ class BinanceFutureHttp(object):
         # print(params)
         return self.request(RequestMethod.POST, path=path, requery_dict=params, verify=True)
 
-    def get_order(self,symbol, order_id=None):
+    def get_order(self,symbol, client_order_id=None):
         path = "/fapi/v1/order"
         query_dict = {"symbol": symbol, "timestamp": self._timestamp()}
-        if order_id:
-            query_dict["orderId"] = order_id
+        if client_order_id:
+            query_dict["origClientOrderId"] = client_order_id
 
         return self.request(RequestMethod.GET, path, query_dict, verify=True)
 
-    def cancel_order(self, symbol, order_id=None):
+
+    def cancel_order(self, symbol, client_order_id=None):
         path = "/fapi/v1/order"
         params = {"symbol": symbol, "timestamp": self._timestamp()}
-        if order_id:
-            params["orderId"] = order_id
+        if client_order_id:
+            params["origClientOrderId"] = client_order_id
 
         return self.request(RequestMethod.DELETE, path, params, verify=True)
 
@@ -297,6 +312,21 @@ class BinanceFutureHttp(object):
             params["symbol"] = symbol
 
         return self.request(RequestMethod.GET, path, params, verify=True)
+
+    def cancel_open_orders(self, symbol):
+        """
+        撤销某个交易对的所有挂单
+        :param symbol: symbol
+        :return: return a list of orders.
+        """
+        path = "/fapi/v1/allOpenOrders"
+
+        params = {"timestamp": self._timestamp(),
+                  "recvWindow": self.recv_window,
+                  "symbol": symbol
+                  }
+
+        return self.request(RequestMethod.DELETE, path, params, verify=True)
 
     def get_balance(self):
         """
@@ -337,7 +367,7 @@ if __name__ == '__main__':
 
     key = "xxxx"
     secret = 'xxxx'
-    binance = BinanceFutureHttp(key=key, secret=secret)
+    binance = BinanceFutureHttp(api_key=key, secret=secret)
 
     # import datetime
     # print(datetime.datetime.now())
