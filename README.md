@@ -8,9 +8,6 @@
 - OKEX 交易所注册推荐码, 手续费返佣20%
    - [https://www.okex.me/join/1847111798](https://www.okex.me/join/1847111798)
 
-- 币安现货推荐码：返佣20%
-   - [https://www.binancezh.com/cn/register?ref=ESE80ESH](https://www.binancezh.com/cn/register?ref=ESE80ESH)
-
 - 币安合约推荐码:返佣10%
    - [https://www.binancezh.com/cn/futures/ref/51bitquant](https://www.binancezh.com/cn/futures/ref/51bitquant)
 

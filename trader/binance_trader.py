@@ -100,7 +100,7 @@ class BinanceTrader(object):
                     buy_price = round_to(float(check_order.get("price")) * (1 - float(config.gap_percent)),
                                      config.min_price)
                     if buy_price > bid_price > 0:
-                        buy_price = round_to(buy_price, float(config.min_price))
+                        buy_price = round_to(bid_price, float(config.min_price))
 
                     new_buy_order = self.http_client.place_order(symbol=config.symbol, order_side=OrderSide.BUY, order_type=OrderType.LIMIT, quantity=quantity, price=buy_price)
                     if new_buy_order:
@@ -132,7 +132,7 @@ class BinanceTrader(object):
                     # 卖单成交，先下买单.
                     buy_price = round_to(float(check_order.get("price")) * (1 - float(config.gap_percent)), float(config.min_price))
                     if buy_price > bid_price > 0:
-                        buy_price = round_to(buy_price, float(config.min_price))
+                        buy_price = round_to(bid_price, float(config.min_price))
 
                     new_buy_order = self.http_client.place_order(symbol=config.symbol, order_side=OrderSide.BUY,
                                                              order_type=OrderType.LIMIT, quantity=quantity, price=buy_price)
