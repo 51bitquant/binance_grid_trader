@@ -1,15 +1,14 @@
 """
-
-    OKEX 交易所注册推荐码, 手续费返佣20%.
-    https://www.okex.me/join/1847111798
-
-    币安推荐码:  返佣20%
-    https://www.binancezh.com/cn/register?ref=ESE80ESH
+    币安推荐码:  返佣10%
+    https://www.binancezh.pro/cn/register?ref=AIR1GC70
 
     币安合约推荐码: 返佣10%
     https://www.binancezh.com/cn/futures/ref/51bitquant
 
-    代码获取方式： 网易云课堂，或者联系bitquant51， 回复：网格交易代码
+    if you don't have a binance account, you can use the invitation link to register one:
+    https://www.binancezh.com/cn/futures/ref/51bitquant
+
+    or use the inviation code: 51bitquant
 
     网格交易: 适合币圈的高波动率的品种，适合现货， 如果交易合约，需要注意防止极端行情爆仓。
 
@@ -18,7 +17,7 @@
 """
 
 
-from gateway import BinanceSpotHttp, BinanceFutureHttp, OrderStatus, OrderType, OrderSide
+from gateway import BinanceFutureHttp, OrderStatus, OrderType, OrderSide
 from utils import config
 from utils import utility, round_to
 from enum import Enum
@@ -29,14 +28,14 @@ class BinanceFutureTrader(object):
 
     def __init__(self):
         """
-        :param api_key:
-        :param secret:
-        :param trade_type: 交易的类型， only support future and spot.
+        the binance future trader, 币安合约交易的网格交易,
+        the grid trading in Future will endure a lot of risk， use it before you understand the risk and grid strategy.
+        网格交易在合约上会有很大的风险，请注意风险
         """
-        self.http_client = BinanceFutureHttp(api_key=config.api_key, secret=config.secret)
+        self.http_client = BinanceFutureHttp(api_key=config.api_key, secret=config.api_secret)
 
-        self.buy_orders = []  # 买单.
-        self.sell_orders = [] # 卖单.
+        self.buy_orders = []  # 买单. buy orders
+        self.sell_orders = [] # 卖单. sell orders
 
 
     def get_bid_ask_price(self):
@@ -54,11 +53,13 @@ class BinanceFutureTrader(object):
     def grid_trader(self):
         """
         执行核心逻辑，网格交易的逻辑.
+
+        the grid trading logic
         :return:
         """
 
         bid_price, ask_price = self.get_bid_ask_price()
-        print(f"bid_price: {bid_price}, ask_price: {ask_price}, 时间: {datetime.now()}")
+        print(f"bid_price: {bid_price}, ask_price: {ask_price}, time: {datetime.now()}")
 
         quantity = round_to(float(config.quantity), float(config.min_qty))
 
@@ -77,7 +78,7 @@ class BinanceFutureTrader(object):
             if check_order:
                 if check_order.get('status') == OrderStatus.CANCELED.value:
                     buy_delete_orders.append(buy_order)
-                    print(f"buy order status was canceled: {check_order.get('status')}, 时间: {datetime.now()}")
+                    print(f"buy order status was canceled: {check_order.get('status')}, time: {datetime.now()}")
                 elif check_order.get('status') == OrderStatus.FILLED.value:
                     # 买单成交，挂卖单.
                     print(f"买单成交了, 时间: {datetime.now()}")
@@ -237,3 +238,6 @@ class BinanceFutureTrader(object):
                                                       client_order_id=delete_order.get('clientOrderId'))
                 if order:
                     self.sell_orders.remove(delete_order)
+
+
+

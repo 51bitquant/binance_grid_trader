@@ -4,26 +4,22 @@
 """
 
 """
-
-    1. Binance spot http client.
-    币安现货的http client
-    OKEX 交易所注册推荐码, 手续费返佣20%.
-    https://www.okex.me/join/1847111798
-
-    币安推荐码:  返佣20%
-    https://www.binancezh.com/cn/register?ref=ESE80ESH
+    币安推荐码:  返佣10%
+    https://www.binancezh.pro/cn/register?ref=AIR1GC70
 
     币安合约推荐码: 返佣10%
     https://www.binancezh.com/cn/futures/ref/51bitquant
-
-    代码获取方式： 网易云课堂，或者联系bitquant51， 回复：网格交易代码
+    
+    if you don't have a binance account, you can use the invitation link to register one: 
+    https://www.binancezh.com/cn/futures/ref/51bitquant
+    
+    or use the inviation code: 51bitquant
 
     网格交易: 适合币圈的高波动率的品种，适合现货， 如果交易合约，需要注意防止极端行情爆仓。
 
 
     服务器购买地址: https://www.ucloud.cn/site/global.html?invitation_code=C1x2EA81CD79B8C#dongjing
 """
-
 
 import requests
 import time
@@ -33,19 +29,21 @@ from enum import Enum
 from threading import Thread, Lock
 from datetime import datetime
 
+
 class OrderStatus(object):
-    NEW              = "NEW"
+    NEW = "NEW"
     PARTIALLY_FILLED = "PARTIALLY_FILLED"
-    FILLED           = "FILLED"
-    CANCELED         = "CANCELED"
-    PENDING_CANCEL   = "PENDING_CANCEL"
-    REJECTED         = "REJECTED"
-    EXPIRED          = "EXPIRED"
+    FILLED = "FILLED"
+    CANCELED = "CANCELED"
+    PENDING_CANCEL = "PENDING_CANCEL"
+    REJECTED = "REJECTED"
+    EXPIRED = "EXPIRED"
+
 
 class OrderType(Enum):
-    LIMIT  = "LIMIT"
+    LIMIT = "LIMIT"
     MARKET = "MARKET"
-    STOP   = "STOP"
+    STOP = "STOP"
 
 
 class RequestMethod(Enum):
@@ -57,25 +55,27 @@ class RequestMethod(Enum):
     PUT = 'PUT'
     DELETE = 'DELETE'
 
+
 class Interval(Enum):
     """
     请求的K线数据..
     """
-    MINUTE_1    = '1m'
-    MINUTE_3    = '3m'
-    MINUTE_5    = '5m'
-    MINUTE_15   = '15m'
-    MINUTE_30   = '30m'
-    HOUR_1      = '1h'
-    HOUR_2      = '2h'
-    HOUR_4      = '4h'
-    HOUR_6      = '6h'
-    HOUR_8      = '8h'
-    HOUR_12     = '12h'
-    DAY_1       = '1d'
-    DAY_3       = '3d'
-    WEEK_1      = '1w'
-    MONTH_1     = '1M'
+    MINUTE_1 = '1m'
+    MINUTE_3 = '3m'
+    MINUTE_5 = '5m'
+    MINUTE_15 = '15m'
+    MINUTE_30 = '30m'
+    HOUR_1 = '1h'
+    HOUR_2 = '2h'
+    HOUR_4 = '4h'
+    HOUR_6 = '6h'
+    HOUR_8 = '8h'
+    HOUR_12 = '12h'
+    DAY_1 = '1d'
+    DAY_3 = '3d'
+    WEEK_1 = '1w'
+    MONTH_1 = '1M'
+
 
 class OrderSide(Enum):
     BUY = "BUY"
@@ -107,10 +107,7 @@ class BinanceFutureHttp(object):
             url += '?' + query_str
         elif requery_dict:
             url += '?' + self.build_parameters(requery_dict)
-        # print(url)
         headers = {"X-MBX-APIKEY": self.key}
-
-        # return requests.request(req_method.value, url=url, headers=headers, timeout=self.timeout).json()
 
         for i in range(0, self.try_counts):
             try:
@@ -205,7 +202,6 @@ class BinanceFutureHttp(object):
             if isinstance(data, list) and len(data):
                 return data
 
-
     def get_latest_price(self, symbol):
         path = "/fapi/v1/ticker/price"
         query_dict = {"symbol": symbol}
@@ -218,28 +214,27 @@ class BinanceFutureHttp(object):
 
     ########################### the following request is for private data ########################
 
-    def _new_order_id(self):
-        """
-        生成一个order_id..
-        :return:
-        """
-        with self.order_count_lock:
-            self.order_count += 1
-            return self.order_count
-
     def _timestamp(self):
         return int(time.time() * 1000)
 
     def _sign(self, params):
 
         requery_string = self.build_parameters(params)
-        hexdigest =  hmac.new(self.secret.encode('utf8'), requery_string.encode("utf-8"), hashlib.sha256).hexdigest()
+        hexdigest = hmac.new(self.secret.encode('utf8'), requery_string.encode("utf-8"), hashlib.sha256).hexdigest()
         return requery_string + '&signature=' + str(hexdigest)
 
-    def order_id(self):
-        return str(self._timestamp() + self._new_order_id())
+    def get_client_order_id(self):
 
-    def place_order(self, symbol: str, order_side: OrderSide, order_type:OrderType, quantity, price, time_inforce="GTC", recvWindow=5000, stop_price=0):
+        """
+        generate the client_order_id for user.
+        :return: new client order id
+        """
+        with self.order_count_lock:
+            self.order_count += 1
+            return "x-cLbi5uMH" + str(self._timestamp()) + str(self.order_count)
+
+    def place_order(self, symbol: str, order_side: OrderSide, order_type: OrderType, quantity, price,
+                    time_inforce="GTC", client_order_id=None, recvWindow=5000, stop_price=0):
 
         """
         下单..
@@ -261,6 +256,9 @@ class BinanceFutureHttp(object):
 
         path = '/fapi/v1/order'
 
+        if client_order_id is None:
+            client_order_id = self.get_client_order_id()
+
         params = {
             "symbol": symbol,
             "side": order_side.value,
@@ -269,7 +267,8 @@ class BinanceFutureHttp(object):
             "price": price,
             "recvWindow": recvWindow,
             "timeInForce": "GTC",
-            "timestamp": self._timestamp()
+            "timestamp": self._timestamp(),
+            "newClientOrderId": client_order_id
         }
 
         if order_type == OrderType.LIMIT:
@@ -287,14 +286,13 @@ class BinanceFutureHttp(object):
         # print(params)
         return self.request(RequestMethod.POST, path=path, requery_dict=params, verify=True)
 
-    def get_order(self,symbol, client_order_id=None):
+    def get_order(self, symbol, client_order_id=None):
         path = "/fapi/v1/order"
         query_dict = {"symbol": symbol, "timestamp": self._timestamp()}
         if client_order_id:
             query_dict["origClientOrderId"] = client_order_id
 
         return self.request(RequestMethod.GET, path, query_dict, verify=True)
-
 
     def cancel_order(self, symbol, client_order_id=None):
         path = "/fapi/v1/order"
@@ -361,6 +359,7 @@ class BinanceFutureHttp(object):
         path = "/fapi/v1/positionRisk"
         params = {"timestamp": self._timestamp()}
         return self.request(RequestMethod.GET, path, params, verify=True)
+
 
 if __name__ == '__main__':
     # import pandas as pd

@@ -1,16 +1,16 @@
 # -*- coding:utf-8 -*-
 """
 
-    OKEX 交易所注册推荐码, 手续费返佣20%.
-    https://www.okex.me/join/1847111798
-
-    币安推荐码:  返佣20%
-    https://www.binancezh.com/cn/register?ref=ESE80ESH
+    币安推荐码:  返佣10%
+    https://www.binancezh.pro/cn/register?ref=AIR1GC70
 
     币安合约推荐码: 返佣10%
     https://www.binancezh.com/cn/futures/ref/51bitquant
 
-    代码获取方式： 网易云课堂，或者联系bitquant51， 回复：网格交易代码
+    if you don't have a binance account, you can use the invitation link to register one:
+    https://www.binancezh.com/cn/futures/ref/51bitquant
+
+    or use the inviation code: 51bitquant
 
     网格交易: 适合币圈的高波动率的品种，适合现货， 如果交易合约，需要注意防止极端行情爆仓。
 
@@ -30,7 +30,7 @@ class Config:
         self.symbol:str = "BNBUSDT"  # 交易对.
         self.gap_percent: float = 0.01  # 网格变化交易的单位.
         self.api_key: str = None
-        self.secret: str = None
+        self.api_secret: str = None
         self.pass_phrase = None
         self.quantity:float = 1
         self.min_price =  0.0001
