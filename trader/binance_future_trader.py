@@ -32,7 +32,7 @@ class BinanceFutureTrader(object):
         the grid trading in Future will endure a lot of risk， use it before you understand the risk and grid strategy.
         网格交易在合约上会有很大的风险，请注意风险
         """
-        self.http_client = BinanceFutureHttp(api_key=config.api_key, secret=config.api_secret)
+        self.http_client = BinanceFutureHttp(api_key=config.api_key, secret=config.api_secret, proxy_host=config.proxy_host, proxy_port=config.proxy_port)
 
         self.buy_orders = []  # 买单. buy orders
         self.sell_orders = [] # 卖单. sell orders

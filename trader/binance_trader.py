@@ -32,7 +32,7 @@ class BinanceTrader(object):
         :param secret:
         :param trade_type: 交易的类型， only support future and spot.
         """
-        self.http_client = BinanceSpotHttp(api_key=config.api_key, secret=config.api_secret)
+        self.http_client = BinanceSpotHttp(api_key=config.api_key, secret=config.api_secret, proxy_host=config.proxy_host, proxy_port=config.proxy_port)
 
         self.buy_orders = []  # 买单.
         self.sell_orders = [] # 卖单.

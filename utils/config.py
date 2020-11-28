@@ -36,6 +36,8 @@ class Config:
         self.min_price =  0.0001
         self.min_qty = 0.01
         self.max_orders = 1
+        self.proxy_host = ""  # proxy host
+        self.proxy_port = 0  # proxy port
 
 
     def loads(self, config_file=None):

@@ -13,7 +13,9 @@
   "quantity": 0.001,
   "min_price": 0.01,
   "min_qty": 0.001,
-  "max_orders": 1
+  "max_orders": 1,
+  "proxy_host": "127.0.0.1",
+  "proxy_port": 1087
 }
 
 ```
@@ -31,6 +33,10 @@
 8. min_qty: 最小的下单量, 现货B要求最小下单是10USDT等值的币, 而对于合约来说,
    BTCUSDT要求是0.001个BTC
 9. max_orders: 单边的下单量
+10. proxy_host: 如果需要用代理的话，请填写你的代理 your proxy host, if you
+    want proxy
+11. proxy_port: 代理端口号 your proxy port for connecting to binance.
+
 
 修改完配置文件后，用shell 命令运行下面的shell 命令:
 > sh start.sh 

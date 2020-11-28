@@ -7,5 +7,7 @@
   "quantity": 0.001,
   "min_price": 0.01,
   "min_qty": 0.001,
-  "max_orders": 1
+  "max_orders": 1,
+  "proxy_host": "",
+  "proxy_port": 0
 }

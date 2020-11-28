@@ -80,7 +80,7 @@ class OrderSide(Enum):
 
 class BinanceSpotHttp(object):
 
-    def __init__(self, api_key=None, secret=None, host=None, timeout=5, try_counts=5):
+    def __init__(self, api_key=None, secret=None, host=None, proxy_host=None, proxy_port=0, timeout=5, try_counts=5):
         self.api_key = api_key
         self.secret = secret
         self.host = host if host else "https://api.binance.com"
@@ -89,6 +89,16 @@ class BinanceSpotHttp(object):
         self.order_count_lock = Lock()
         self.order_count = 1_000_000
         self.try_counts = try_counts # 失败尝试的次数.
+        self.proxy_host = proxy_host
+        self.proxy_port = proxy_port
+
+    @property
+    def proxies(self):
+        if self.proxy_host and self.proxy_port:
+            proxy = f"http://{self.proxy_host}:{self.proxy_port}"
+            return {"http": proxy, "https": proxy}
+
+        return None
 
     def build_parameters(self, params: dict):
         keys = list(params.keys())
@@ -107,7 +117,7 @@ class BinanceSpotHttp(object):
 
         for i in range(0, self.try_counts):
             try:
-                response = requests.request(req_method.value, url=url, headers=headers, timeout=self.timeout)
+                response = requests.request(req_method.value, url=url, headers=headers, timeout=self.timeout, proxies=self.proxies)
                 if response.status_code == 200:
                     return response.json()
                 else:
