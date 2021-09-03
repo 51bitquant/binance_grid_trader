@@ -5,44 +5,46 @@
 
 ```json
 {
-  "platform": "binance_spot",  
-  "symbol": "BTCUSDT",
+  "platform": "binance_spot",
+  "symbol": "ETHUSDT",
   "api_key": "replace your api key here",
   "api_secret": "replace your api secret here",
-  "gap_percent": 0.001,
-  "quantity": 0.001,
-  "min_price": 0.01,
-  "min_qty": 0.001,
+  "gap_percent": 0.005,
+  "quantity": 0.01,
   "max_orders": 1,
-  "proxy_host": "127.0.0.1",
-  "proxy_port": 1087
+  "proxy_host": "",
+  "proxy_port": 0
 }
 
 ```
 
-1. platform 是交易的平台, 填写 binance_spot 或者 binance_future,
-   如果交易的是合约的，就填写binance_future.
-2. symbol 交易对: BTCUSDT, BNBUSDT等
-3. api_key : 从交易所获取
-4. api_secret: 交易所获取
-5. gap_percent: 网格交易的价格间隙
-6. quantity : 每次下单的数量
-7. min_price: 价格波动的最小单位, 用来计算价格精度： 如BTCUSDT 是0.01,
-   BNBUSDT是0.0001, ETHUSDT 是0.01, 这个价格要从交易所查看，每个交易对不一样。
-   
-8. min_qty: 最小的下单量, 现货B要求最小下单是10USDT等值的币, 而对于合约来说,
-   BTCUSDT要求是0.001个BTC
-9. max_orders: 单边的下单量
-10. proxy_host: 如果需要用代理的话，请填写你的代理 your proxy host, if you
-    want proxy
-11. proxy_port: 代理端口号 your proxy port for connecting to binance.
-
+1. platform: 是交易的平台, 填写 binance_spot 或者 binance_future,
+   如果交易的是合约的，就填写binance_future. if you want to trade future,
+   use binance_future, or binance_spot for spot exchange in Binance.
+2. symbol 交易对: BTCUSDT, BNBUSDT等, trading pair like BTCUSDT, ETHUSDT.
+3. api_key : 从交易所获取 api key from Binance
+4. api_secret: 交易所获取 api secret from Binance
+5. gap_percent: 网格交易的价格间隙, the grid step
+6. quantity : 每次下单的数量, the order quantity you want to trade every
+   time.
+7. max_orders: 单边的下单量: max order count.
+8. proxy_host: 如果需要用代理的话，请填写你的代理 your proxy host, if you
+  want proxy
+9. proxy_port: 代理端口号 your proxy port for connecting to binance.
 
 修改完配置文件后，用shell 命令运行下面的shell 命令:
 > sh start.sh 
 
 网格交易的原理视频讲解链接:
 [https://www.bilibili.com/video/BV1Jg4y1v7vr/](https://www.bilibili.com/video/BV1Jg4y1v7vr/)
+
+## how to use.
+1. download the code, and edit the config.json file, input your
+configuration, then save the file.
+2. run the main.py file in Pycharm or use the shell script. then run sh
+   start.sh
+  
+
 
 ## 交易所注册推荐码
 

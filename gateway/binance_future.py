@@ -210,7 +210,7 @@ class BinanceFutureHttp(object):
             data = self.request(RequestMethod.GET, path, query_dict)
             if isinstance(data, list) and len(data):
                 return data
-
+        return []
     def get_latest_price(self, symbol):
         path = "/fapi/v1/ticker/price"
         query_dict = {"symbol": symbol}
@@ -220,6 +220,10 @@ class BinanceFutureHttp(object):
         path = "/fapi/v1/ticker/bookTicker"
         query_dict = {"symbol": symbol}
         return self.request(RequestMethod.GET, path, query_dict)
+
+    def get_all_tickers(self):
+        path = "/fapi/v1/ticker/bookTicker"
+        return self.request(RequestMethod.GET, path)
 
     ########################### the following request is for private data ########################
 

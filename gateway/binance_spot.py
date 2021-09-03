@@ -114,7 +114,6 @@ class BinanceSpotHttp(object):
         elif requery_dict:
             url += '?' + self.build_parameters(requery_dict)
         headers = {"X-MBX-APIKEY": self.api_key}
-
         for i in range(0, self.try_counts):
             try:
                 response = requests.request(req_method.value, url=url, headers=headers, timeout=self.timeout, proxies=self.proxies)
@@ -125,6 +124,7 @@ class BinanceSpotHttp(object):
             except Exception as error:
                 print(f"请求:{path}, 发生了错误: {error}")
                 time.sleep(3)
+        return None
 
     def get_server_time(self):
         path = '/api/v3/time'
@@ -223,6 +223,18 @@ class BinanceSpotHttp(object):
         path = "/api/v3/ticker/bookTicker"
         query_dict = {"symbol": symbol}
         return self.request(RequestMethod.GET, path, query_dict)
+
+    def get_all_tickers(self):
+        """
+        :param symbol: 交易对
+        :return: 返回的数据如下:
+        {
+        'symbol': 'BTCUSDT', 'bidPrice': '9168.50000000', 'bidQty': '1.27689900',
+        'askPrice': '9168.51000000', 'askQty': '0.93307800'
+        }
+        """
+        path = "/api/v3/ticker/bookTicker"
+        return self.request(RequestMethod.GET, path)
 
     def get_client_order_id(self):
         """

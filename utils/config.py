@@ -18,7 +18,6 @@
     服务器购买地址: https://www.ucloud.cn/site/global.html?invitation_code=C1x2EA81CD79B8C#dongjing
 """
 
-
 import json
 
 
@@ -27,18 +26,15 @@ class Config:
     def __init__(self):
 
         self.platform: str = "binance_spot"  # 交易的平台
-        self.symbol:str = "BNBUSDT"  # 交易对.
-        self.gap_percent: float = 0.01  # 网格变化交易的单位.
+        self.symbol: str = "BNBUSDT"  # 交易对.
         self.api_key: str = None
         self.api_secret: str = None
-        self.pass_phrase = None
-        self.quantity:float = 1
-        self.min_price =  0.0001
-        self.min_qty = 0.01
-        self.max_orders = 1
-        self.proxy_host = ""  # proxy host
-        self.proxy_port = 0  # proxy port
 
+        self.gap_percent: float = 0.01  # 网格变化交易的单位.
+        self.quantity: float = 1
+        self.max_orders: int = 1
+        self.proxy_host: str = ""  # proxy host
+        self.proxy_port: int = 0  # proxy port
 
     def loads(self, config_file=None):
         """ Load config file.
@@ -70,5 +66,6 @@ class Config:
 
         for k, v in update_fields.items():
             setattr(self, k, v)
+
 
 config = Config()

@@ -16,7 +16,6 @@
     服务器购买地址: https://www.ucloud.cn/site/global.html?invitation_code=C1x2EA81CD79B8C#dongjing
 """
 
-
 from gateway import BinanceSpotHttp, OrderStatus, OrderType, OrderSide
 from utils import config
 from utils import utility, round_to
@@ -24,7 +23,8 @@ from enum import Enum
 import logging
 from datetime import datetime
 
-class BinanceTrader(object):
+
+class BinanceSpotTrader(object):
 
     def __init__(self):
         """
@@ -32,11 +32,32 @@ class BinanceTrader(object):
         :param secret:
         :param trade_type: 交易的类型， only support future and spot.
         """
-        self.http_client = BinanceSpotHttp(api_key=config.api_key, secret=config.api_secret, proxy_host=config.proxy_host, proxy_port=config.proxy_port)
+        self.http_client = BinanceSpotHttp(api_key=config.api_key, secret=config.api_secret,
+                                           proxy_host=config.proxy_host, proxy_port=config.proxy_port)
 
         self.buy_orders = []  # 买单.
-        self.sell_orders = [] # 卖单.
+        self.sell_orders = []  # 卖单.
+        self.symbols_dict = {}
 
+    def get_exchange_info(self):
+        data = self.http_client.get_exchange_info()
+        if isinstance(data, dict):
+            items = data.get('symbols', [])
+            for item in items:
+
+                if item.get('status') == "TRADING":
+
+                    symbol = item['symbol']
+                    symbol_data = {"symbol": symbol}
+                    for filters in item['filters']:
+                        if filters['filterType'] == 'PRICE_FILTER':
+                            symbol_data['min_price'] = float(filters['tickSize'])
+                        elif filters['filterType'] == 'LOT_SIZE':
+                            symbol_data['min_qty'] = float(filters['stepSize'])
+                        elif filters['filterType'] == 'MIN_NOTIONAL':
+                            symbol_data['min_notional'] = float(filters['minNotional'])
+
+                    self.symbols_dict[symbol] = symbol_data
 
     def get_bid_ask_price(self):
 
@@ -50,16 +71,28 @@ class BinanceTrader(object):
 
         return bid_price, ask_price
 
-    def grid_trader(self):
+    def start(self):
         """
         执行核心逻辑，网格交易的逻辑.
         :return:
         """
+        symbol_data = self.symbols_dict.get(config.symbol, None)
+        if symbol_data is None:
+            self.get_exchange_info()
+            symbol_data = self.symbols_dict.get(config.symbol, None)
+            if symbol_data is None:
+                return None
+
+        min_price = symbol_data.get('min_price', 0)
+        min_qty = symbol_data.get('min_qty', 0)
+
+        if min_price <= 0 and min_qty <= 0:
+            return None
 
         bid_price, ask_price = self.get_bid_ask_price()
         print(f"bid_price: {bid_price}, ask_price: {ask_price}")
 
-        quantity = round_to(float(config.quantity), float(config.min_qty))
+        quantity = round_to(float(config.quantity), min_qty)
 
         self.buy_orders.sort(key=lambda x: float(x['price']), reverse=True)  # 最高价到最低价.
         self.sell_orders.sort(key=lambda x: float(x['price']), reverse=True)  # 最高价到最低价.
@@ -68,13 +101,13 @@ class BinanceTrader(object):
         print(f"sell orders: {self.sell_orders}")
 
         buy_delete_orders = []  # 需要删除买单
-        sell_delete_orders = [] # 需要删除的卖单
-
+        sell_delete_orders = []  # 需要删除的卖单
 
         # 买单逻辑,检查成交的情况.
         for buy_order in self.buy_orders:
 
-            check_order = self.http_client.get_order(buy_order.get('symbol', config.symbol),client_order_id=buy_order.get('clientOrderId'))
+            check_order = self.http_client.get_order(buy_order.get('symbol', config.symbol),
+                                                     client_order_id=buy_order.get('clientOrderId'))
 
             if check_order:
                 if check_order.get('status') == OrderStatus.CANCELED.value:
@@ -82,26 +115,29 @@ class BinanceTrader(object):
                     print(f"buy order status was canceled: {check_order.get('status')}")
                 elif check_order.get('status') == OrderStatus.FILLED.value:
                     # 买单成交，挂卖单.
-                    logging.info(f"买单成交时间: {datetime.now()}, 价格: {check_order.get('price')}, 数量: {check_order.get('origQty')}")
+                    logging.info(
+                        f"买单成交时间: {datetime.now()}, 价格: {check_order.get('price')}, 数量: {check_order.get('origQty')}")
 
-
-                    sell_price = round_to(float(check_order.get("price")) * (1 + float(config.gap_percent)), float(config.min_price))
+                    sell_price = round_to(float(check_order.get("price")) * (1 + float(config.gap_percent)), min_price)
 
                     if 0 < sell_price < ask_price:
                         # 防止价格
-                        sell_price = round_to(ask_price, float(config.min_price))
+                        sell_price = round_to(ask_price, min_price)
 
-                    new_sell_order = self.http_client.place_order(symbol=config.symbol, order_side=OrderSide.SELL, order_type=OrderType.LIMIT, quantity=quantity, price=sell_price)
+                    new_sell_order = self.http_client.place_order(symbol=config.symbol, order_side=OrderSide.SELL,
+                                                                  order_type=OrderType.LIMIT, quantity=quantity,
+                                                                  price=sell_price)
                     if new_sell_order:
                         buy_delete_orders.append(buy_order)
                         self.sell_orders.append(new_sell_order)
 
-                    buy_price = round_to(float(check_order.get("price")) * (1 - float(config.gap_percent)),
-                                     config.min_price)
+                    buy_price = round_to(float(check_order.get("price")) * (1 - float(config.gap_percent)), min_price)
                     if buy_price > bid_price > 0:
-                        buy_price = round_to(bid_price, float(config.min_price))
+                        buy_price = round_to(bid_price, min_price)
 
-                    new_buy_order = self.http_client.place_order(symbol=config.symbol, order_side=OrderSide.BUY, order_type=OrderType.LIMIT, quantity=quantity, price=buy_price)
+                    new_buy_order = self.http_client.place_order(symbol=config.symbol, order_side=OrderSide.BUY,
+                                                                 order_type=OrderType.LIMIT, quantity=quantity,
+                                                                 price=buy_price)
                     if new_buy_order:
                         self.buy_orders.append(new_buy_order)
 
@@ -119,7 +155,7 @@ class BinanceTrader(object):
         for sell_order in self.sell_orders:
 
             check_order = self.http_client.get_order(sell_order.get('symbol', config.symbol),
-                                               client_order_id=sell_order.get('clientOrderId'))
+                                                     client_order_id=sell_order.get('clientOrderId'))
             if check_order:
                 if check_order.get('status') == OrderStatus.CANCELED.value:
                     sell_delete_orders.append(sell_order)
@@ -129,25 +165,27 @@ class BinanceTrader(object):
                     logging.info(
                         f"卖单成交时间: {datetime.now()}, 价格: {check_order.get('price')}, 数量: {check_order.get('origQty')}")
                     # 卖单成交，先下买单.
-                    buy_price = round_to(float(check_order.get("price")) * (1 - float(config.gap_percent)), float(config.min_price))
+                    buy_price = round_to(float(check_order.get("price")) * (1 - float(config.gap_percent)),
+                                         min_price)
                     if buy_price > bid_price > 0:
-                        buy_price = round_to(bid_price, float(config.min_price))
+                        buy_price = round_to(bid_price, min_price)
 
                     new_buy_order = self.http_client.place_order(symbol=config.symbol, order_side=OrderSide.BUY,
-                                                             order_type=OrderType.LIMIT, quantity=quantity, price=buy_price)
+                                                                 order_type=OrderType.LIMIT, quantity=quantity,
+                                                                 price=buy_price)
                     if new_buy_order:
                         sell_delete_orders.append(sell_order)
                         self.buy_orders.append(new_buy_order)
 
-                    sell_price = round_to(float(check_order.get("price")) * (1 + float(config.gap_percent)), float(config.min_price))
+                    sell_price = round_to(float(check_order.get("price")) * (1 + float(config.gap_percent)), min_price)
 
                     if 0 < sell_price < ask_price:
                         # 防止价格
-                        sell_price = round_to(ask_price, float(config.min_price))
+                        sell_price = round_to(ask_price, min_price)
 
                     new_sell_order = self.http_client.place_order(symbol=config.symbol, order_side=OrderSide.SELL,
-                                                                 order_type=OrderType.LIMIT, quantity=quantity,
-                                                                 price=sell_price)
+                                                                  order_type=OrderType.LIMIT, quantity=quantity,
+                                                                  price=sell_price)
                     if new_sell_order:
                         self.sell_orders.append(new_sell_order)
 
@@ -163,29 +201,32 @@ class BinanceTrader(object):
         # 没有买单的时候.
         if len(self.buy_orders) <= 0:
             if bid_price > 0:
-                price = round_to(bid_price * (1 - float(config.gap_percent)), float(config.min_price))
-                buy_order = self.http_client.place_order(symbol=config.symbol,order_side=OrderSide.BUY, order_type=OrderType.LIMIT, quantity=quantity,price=price)
+                price = round_to(bid_price * (1 - float(config.gap_percent)), min_price)
+                buy_order = self.http_client.place_order(symbol=config.symbol, order_side=OrderSide.BUY,
+                                                         order_type=OrderType.LIMIT, quantity=quantity, price=price)
                 if buy_order:
                     self.buy_orders.append(buy_order)
 
-        elif len(self.buy_orders) > int(config.max_orders): # 最多允许的挂单数量.
+        elif len(self.buy_orders) > int(config.max_orders):  # 最多允许的挂单数量.
             # 订单数量比较多的时候.
             self.buy_orders.sort(key=lambda x: float(x['price']), reverse=False)  # 最低价到最高价
 
             delete_order = self.buy_orders[0]
-            order = self.http_client.cancel_order(delete_order.get('symbol'), client_order_id=delete_order.get('clientOrderId'))
+            order = self.http_client.cancel_order(delete_order.get('symbol'),
+                                                  client_order_id=delete_order.get('clientOrderId'))
             if order:
                 self.buy_orders.remove(delete_order)
 
         # 没有卖单的时候.
         if len(self.sell_orders) <= 0:
             if ask_price > 0:
-                price = round_to(ask_price * (1 + float(config.gap_percent)), float(config.min_price))
-                order = self.http_client.place_order(symbol=config.symbol,order_side=OrderSide.SELL, order_type=OrderType.LIMIT, quantity=quantity,price=price)
+                price = round_to(ask_price * (1 + float(config.gap_percent)), min_price)
+                order = self.http_client.place_order(symbol=config.symbol, order_side=OrderSide.SELL,
+                                                     order_type=OrderType.LIMIT, quantity=quantity, price=price)
                 if order:
                     self.sell_orders.append(order)
 
-        elif len(self.sell_orders) > int(config.max_orders): # 最多允许的挂单数量.
+        elif len(self.sell_orders) > int(config.max_orders):  # 最多允许的挂单数量.
             # 订单数量比较多的时候.
             self.sell_orders.sort(key=lambda x: x['price'], reverse=True)  # 最高价到最低价
 

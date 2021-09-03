@@ -1,9 +1,9 @@
 {
   "platform": "binance_spot",
-  "symbol": "BTCUSDT",
+  "symbol": "ETHUSDT",
   "api_key": "replace your api key here",
   "api_secret": "replace your api secret here",
-  "gap_percent": 0.001,
+  "gap_percent": 0.005,
   "quantity": 0.001,
   "max_orders": 1,
   "proxy_host": "",
