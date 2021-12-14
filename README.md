@@ -89,8 +89,7 @@ configuration, then save the file.
 - scp scp binance_grid_trader.zip ubuntu@xxx.xxx.xxx.xxx:/home/ubuntu
 - pwd 
 - mv  #  移动或者剪切文件
-- ps -ef | grep main.py    # 查看进程
-- kill 进程id  # 杀死当前进程
+- sh stop.sh # 杀死当前进程
 
 ## 部署
 直接把代码上传到服务器, 通过scp命令上传
@@ -113,11 +112,8 @@ configuration, then save the file.
 执行运行脚本
 > sh start.sh 
 
-查看程序运行的id
-> ps -ef | grep main.py
-
 杀死进程, 关闭程序
-> kill <进程ID> 
+> sh stop.sh 
 
 **linux服务器指令和网格策略实盘部署过程如下**
 [https://www.bilibili.com/video/BV1mK411n7JW/](https://www.bilibili.com/video/BV1mK411n7JW/)
@@ -130,6 +126,3 @@ configuration, then save the file.
 可以添加我的微信，如果你有什么量化问题、python学习、课程咨询等方面的问题，都可以咨询我。
 
 ![51bitquant个人微信](https://upload-images.jianshu.io/upload_images/814550-f83c8302f2c4e344.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-
-
