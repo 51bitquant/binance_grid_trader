@@ -5,6 +5,9 @@ Binance Future Exchange. you can use it to trade any pair in Binance
 Exchange.
 
 
+[中文文档](README-Chinese.md)
+
+
 # how-to-use
 First, download the codes. Then create a python virtual env, you can use
 the anaconda to create the env.
