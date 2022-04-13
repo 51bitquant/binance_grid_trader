@@ -31,14 +31,14 @@ Note: if you run the main.py, you will see the Window UI, if you want to
 run without ui, you can run the main_futures_script.py or
 main_spot_script.py, they are for the binance futures or spot exchange.
 
-<img src="./resources/img_window.png"  width="1000" height="612" alt="window picture"/>
+<img src="resources/img_window.png"  width="1000" height="612" alt="window picture"/>
 
 
 # Config Binance Future Api and connect Binance Futures Api
 Click the top-left Config Binance Api button, near the python button and
 select Connect Futures.
 
-<img src="./resources/connect_future_usdt.png" alt="connect_future_usdt"/>
+<img src="resources/connect_future_usdt.png" alt="connect_future_usdt"/>
 
 1. key: past your api key from binance exchange Api management here.
 
@@ -60,7 +60,7 @@ button.
 Click the top-left Config Binance Api button, near the python button and
 select Connect Spot.
 
-<img src="./resources/connect_spot.png" alt="connect_future_usdt"/>
+<img src="resources/connect_spot.png" alt="connect_future_usdt"/>
 
 1. key: past your api key from binance exchange Api management here.
 
@@ -82,7 +82,7 @@ button.
 # Add Futures Grid Strategy
 
 
-<img src="./resources/add_future_grid_strategy.png" alt="window picture"/>
+<img src="resources/add_future_grid_strategy.png" alt="window picture"/>
 If you want to run the grid strategy in Futures Market, you can add the FutureGridStrategy. The following is the parameters description for the strategy:
 
 1. strategy_name: set a name for the strategy.
@@ -114,7 +114,7 @@ in the strategy when runnning.
 
 # Add Spot Grid Strategy 
 
-<img src="./resources/add_spot_grid_strategy.png" alt="window picture"/>
+<img src="resources/add_spot_grid_strategy.png" alt="window picture"/>
 
 If you want to run the grid strategy in Spot Market, you can add the
 SpotGridStrategy. The following is the parameters description for the
@@ -154,7 +154,7 @@ in the strategy when runnning.
 
 # Start Your Grid Strategy
 
-<img src="./resources/start_strategy.png" alt="window picture"/>
+<img src="resources/start_strategy.png" alt="window picture"/>
 
 If you want to start the grid strategy, you need to:
 1. Init your strategy: Click the Init Button
