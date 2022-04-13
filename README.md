@@ -5,7 +5,7 @@ Binance Future Exchange. you can use it to trade any pair in Binance
 Exchange.
 
 
-[中文文档](README-Chinese.md)
+[中文文档](READEME-Chinese.md)
 
 
 # how-to-use
