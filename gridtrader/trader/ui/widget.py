@@ -6,7 +6,7 @@ from typing import Any, Dict
 from tzlocal import get_localzone
 from PyQt5 import QtCore, QtGui, QtWidgets
 from gridtrader.event import Event, EventEngine
-from ..constant import Direction, Exchange, Offset, OrderType
+from ..constant import Direction
 from ..engine import MainEngine
 from gridtrader.event import (
     EVENT_LOG,
