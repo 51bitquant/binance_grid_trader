@@ -1,1 +1,0 @@
-kill `cat process.pid`

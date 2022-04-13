@@ -1,0 +1,13 @@
+{
+    "BTCBUSD": {
+        "class_name": "FutureGridStrategy",
+        "vt_symbol": "BTCBUSD.BINANCE",
+        "setting": {
+            "upper_price": 42000,
+            "bottom_price": 39000,
+            "grid_number": 100,
+            "order_volume": 0.001,
+            "max_open_orders": 5
+        }
+    }
+}
