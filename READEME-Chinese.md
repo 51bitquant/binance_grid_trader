@@ -37,7 +37,7 @@ main_spot_script.py（币安现货）
 <img src="resources/img_window.png"  width="1000" height="612" alt="window picture"/>
 
 
-# 配置币安合约api和连接币安合约api
+# 设置币安合约api和连接币安合约api
 
 点击左上角的 Config Binance Api 按钮,然后点击 Connect Futures 选项
 
@@ -62,126 +62,116 @@ main_spot_script.py（币安现货）
   
 你api的配置信息会保存在项目文件下的gridtrader/connect_futures.json文件，你可以可以直接在这个文件中修改。
 
-提示: 你每次运行网格Remember every time you run the grid strategy, you
-need to connect the api your api First.To connect the binance api, Click
-the confirm button.
+提示:在你每次运行网格策略前，你需要点击连接交易所api,不然会没法或者交易对信息。
+
 
 # Config Binance Spot Api and connect Binance Spot Api
-Click the top-left Config Binance Api button, near the python button and
-select Connect Spot.
+点击左上角的 Config Binance Api 按钮,然后点击 Connect Spot 选项
 
 <img src="resources/connect_spot.png" alt="connect_future_usdt"/>
 
-1. key: past your api key from binance exchange Api management here.
+1. key: 复制你在币安交易所网站api管理那里生成的api key
 
-2. secret: past your api secret from binance exchange Api management, and remember to edit your api restrictions to allow trade futures. 
+2. secret: 复制你在币安交易所网站api管理那里生成的api
+   私钥。记得编辑你api的权限，如果你是在服务器上运行，有固定的ip,
+   建议你也设置下ip. 如果没有固定ip地址，那就不设置ip。
+   
+3. proxy_host和proxy_port: 代理主机和代理端口，
+  如果你能直接访问币安交易所，proxy_host和proxy_port你就不填写.
+  如果你不能直接访问交易所,
+  或者你需要翻墙的话，你就要设置proxy_host代理主机和proxy_port代理端口。你如果本地有运行代理vpy软件，就你设置你的proxy_host为127.0.0.1,
+  proxy_port就根据你vpn的端口。如果你没有运行vpn软件，那么代理主机和端口就填写服务器的ip和端口号。
+  
+  
+你api的配置信息会保存在项目文件下的gridtrader/connect_spot.json文件，你可以可以直接在这个文件中修改。
 
-3. proxy_host and proxy_port, if you can connect to binance exchange,
-  then leave it blank. If you can't connect directly to Binance
-  exchange, you may need to config the proxy_host or proxy_port. If you
-  have run vpn software, then set the proxy_host to 127.0.0.1 else you
-  need to set the proxy_host to a remote server ip.
+提示:在你每次运行网格策略前，你需要点击连接交易所api,不然会没法或者交易对信息。
 
-All your config api data will save in project directory
-gridtrader/connect_spot.json file.
 
-NOTE: Remember every time you run the grid strategy, you need to connect
-the api your api First.To connect the binance api, Click the confirm
-button.
-
-# Add Futures Grid Strategy
-
+# 添加合约网格策略
 
 <img src="resources/add_future_grid_strategy.png" alt="window picture"/>
-If you want to run the grid strategy in Futures Market, you can add the FutureGridStrategy. The following is the parameters description for the strategy:
+如果你想跑币安合约网格策略，你在点击添加策略的时候，选择FutureGridStrategy, 然后进入策略参数的填写。关于策略参数的说明如下：
 
-1. strategy_name: set a name for the strategy.
-2. vt_symbol: the symbol you want to trade, like BTCUSDT, ETHBUSD ect.
-   for Future, remember to use the uppercase. if you use the lower case,
-   you will run in the Spot market.
+1. strategy_name: 策略的名称，随便取，但是不要重复，如果btc，abcd 都可以的。
+2. vt_symbol: 交易对名称, 如BTCUSDT,
+   ETHBUSD等，但是对于合约，你的交易对名称要英文大写，如果是小写的，会交易的是现货交易对。
    
-3. upper_price: the grid highest price, if you set the upper_price to
-   40000, that means if the market price is over 40000, the strategy
-   won't place any order.
+3. upper_price: 网格策略的上限，如果价格超过该值，网格策略就不会下单了。
    
-4. bottom_price: the lowest price fo the strategy. If you set the
-   bottom_price to 30000, if the price is under 30000, the strategy
-   won't place any order.
+4. bottom_price: 网格策略的下限，如果价格低于该值，网格策略就不会下单了。
 
-5. grid_number, the grid number for the strategy, if the upper_price is
-   40000, the bottom_price is 30000, if the grid_number is 100, the grid
-   step(or the order price step) is (40000- 30000)/100 = 100
+5. grid_number, 网格的数量, 如果你的upper_price是40000, 你的bottom_price是
+   30000, grid_number设置是100,那么网格的间隙为(40000- 30000)/100 = 100,
+   它会根据该网格价差进行挂单。
    
-6. order_volume: your order volume/quantity
+6. order_volume: 每次交易的订单的数量，如果你设置0.01,交易对是BTCUSDT,
+   那么每次下单是0.01个BTC。
 
-7. max_open_orders: the max open order in buy/sell side.
+7. max_open_orders: 就是买卖单最大的挂单数量。
 
-The strategy settings data will save in
-gridtrader/grid_strategy_setting.json, you can checkout and modify it.
+你的策略配置的参数会保存在项目下面的gridtrader/grid_strategy_setting.json文件中，你可以点击编辑修改。
 
-And the gridtrader/grid_strategy_data.json file will save some variables
-in the strategy when runnning.
+另外策略运行的一些变量会保存在项目下的文件gridtrader/grid_strategy_data.json中。
 
-# Add Spot Grid Strategy 
+# 添加现货网格策略 
 
 <img src="resources/add_spot_grid_strategy.png" alt="window picture"/>
 
-If you want to run the grid strategy in Spot Market, you can add the
-SpotGridStrategy. The following is the parameters description for the
-strategy:
+如果你想跑币安现货网格策略，你在点击添加策略的时候，选择SpotGridStrategy,
+然后进入策略参数的填写。关于策略参数的说明如下：
 
-1. strategy_name: set a name for the strategy.
-2. vt_symbol: the symbol you want to trade, like btcusdt, ethbusd ect.
-   for spot market, remember to use the lowercase. if you use the
-   lower case, you will run in the Spot market.
+1. strategy_name: 策略的名称，随便取，但是不要重复，如果btc，abcd 都可以的。
+2. vt_symbol: 交易对名称, 如BTCUSDT,
+   ETHBUSD等，但是对于合约，你的交易对名称要英文大写，如果是小写的，会交易的是现货交易对。
    
-3. upper_price: the grid highest price, if you set the upper_price to
-   40000, that means if the market price is over 40000, the strategy
-   won't place any order.
+3. upper_price: 网格策略的上限，如果价格超过该值，网格策略就不会下单了。
    
-4. bottom_price: the lowest price fo the strategy. If you set the
-   bottom_price to 30000, if the price is under 30000, the strategy
-   won't place any order.
+4. bottom_price: 网格策略的下限，如果价格低于该值，网格策略就不会下单了。
 
-5. grid_number, the grid number for the strategy, if the upper_price is
-   40000, the bottom_price is 30000, if the grid_number is 100, the grid
-   step(or the order price step) is (40000- 30000)/100 = 100
+5. grid_number, 网格的数量, 如果你的upper_price是40000, 你的bottom_price是
+   30000, grid_number设置是100,那么网格的间隙为(40000- 30000)/100 = 100,
+   它会根据该网格价差进行挂单。
    
-6. order_volume: your order volume/quantity
+6. order_volume: 每次交易的订单的数量，如果你设置0.01,交易对是BTCUSDT,
+   那么每次下单是0.01个BTC。
+   
+7. invest_coin: 用投资代币名称，如果你是跑btcbusd, 那么就就填写BUSD,
+   如果你是跑ethusdt,那么就填写usdt, 如果跑的是ethbtc, 那么你就填写btc.
 
-7. invest_coin: if you want to trade btcusdt, then set to USDT, if you
-   want to trade btcbusd, then set to BUSD, if you want to trade ethbtc,
-   then set to btc.
+8. max_open_orders: 就是买卖单最大的挂单数量。
 
-8. max_open_orders: the max open order in buy/sell side.
+你的策略配置的参数会保存在项目下面的gridtrader/grid_strategy_setting.json文件中，你可以点击编辑修改。
+另外策略运行的一些变量会保存在项目下的文件gridtrader/grid_strategy_data.json中。
 
-The strategy settings data will save in
-gridtrader/grid_strategy_setting.json, you can checkout and modify it.
+不管是合约还是现货，他们的策略配置信息都保存在gridtrader/grid_strategy_setting.json文件中。
 
-And the gridtrader/grid_strategy_data.json file will save some variables
-in the strategy when runnning.
-
-
-# Start Your Grid Strategy
+# 启动你的网格策略
 
 <img src="resources/start_strategy.png" alt="window picture"/>
 
-If you want to start the grid strategy, you need to:
-1. Init your strategy: Click the Init Button
+如果你要启动你的策略，你需要进行两步操作，初始化策略和启动策略
 
-2. Start your strategy: Click the Start Button.
+1. 初始化你的策略: 点击 Init 按钮
 
-If you want to stop the strategy, click the Stop button, or even click
-edit button to edit the strategy's parameters.
+2. 启动你的策略: 点击 Start 按钮
 
-If you have a lot of strategies to start in batch, you can click Init
-All Strategies and Start All Strategies.
+如果你需要停止你的策略，你可以点击Stop按钮。你也可以点击Edit按钮来编辑你的策略参数，甚至点击
+Remove按钮来删除该策略配置。
+
+如果你有很多策略你也可以通过批量来操作。点击Init All
+Strategies,就是初始化全部策略， Start All Strategies,
+就是启动全部策略。但是在初始化和启动前，一定要记得先连接你的交易所api，不然会出错。
 
 
-# using script
-If you don't want to sue UI, you can use the script. If you want to
-trade in spot market, checkout the main_spot_script.py. If you want to
-trade in the future market, checkout the main_futures_script.py
+# 使用脚本来运行
+
+如果你在linux系统上运行，或者不想使用UI,
+你可以直接在用脚本运行。如果你想运行现货网格策略，
+直接运行main_spot_script.py文件。如果你想运行合约网格策略，
+直接运行main_futures_script.py文件即可。
+
+但是运行前，你需要编辑gridtrader/grid_strategy_setting.json文件，关于它的配置，你可以先用ui生成然后再修改。
 
 
 # 联系方式 

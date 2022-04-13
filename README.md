@@ -172,9 +172,14 @@ All Strategies and Start All Strategies.
 
 
 # using script
-If you don't want to sue UI, you can use the script. If you want to
-trade in spot market, checkout the main_spot_script.py. If you want to
-trade in the future market, checkout the main_futures_script.py
+If want to run the code in Linux system or just don't want to use the
+UI, you can use the script. If you want to trade in spot market,
+checkout the main_spot_script.py. If you want to trade in the future
+market, checkout the main_futures_script.py
+
+But before run the script, you need to edit the
+gridtrader/grid_strategy_setting.json file, then config your strategy
+setting.
 
 
 ## contact

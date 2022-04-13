@@ -9,5 +9,18 @@
             "order_volume": 0.001,
             "max_open_orders": 5
         }
+    },
+    "btcbusd": {
+        "class_name": "SpotGridStrategy",
+        "vt_symbol": "btcbusd.BINANCE",
+        "setting": {
+            "class_name": "SpotGridStrategy",
+            "upper_price": 42000.0,
+            "bottom_price": 32000.0,
+            "grid_number": 50,
+            "order_volume": 0.001,
+            "invest_coin": "BUSD",
+            "max_open_orders": 5
+        }
     }
 }
