@@ -5,18 +5,9 @@ from gridtrader.event import EventEngine
 from gridtrader.trader.setting import SETTINGS
 from gridtrader.trader.engine import MainEngine, CtaEngine
 
-
 SETTINGS["log.active"] = True
 SETTINGS["log.level"] = INFO
 SETTINGS["log.console"] = True
-
-
-spot_settings = {
-    "key": "past your api key from binance exchange",
-    "secret": "past your api secret from binance exchange",
-    "proxy_host": "",
-    "proxy_port": 0
-}
 
 
 def run_spot_strategy():
@@ -48,6 +39,13 @@ def run_spot_strategy():
 
 
 if __name__ == "__main__":
-
     # the spot script, no ui, if you want to use the window UI, please use the main.py
+    # before running, remember to past your api here.
+    spot_settings = {
+        "key": "past your api key from binance exchange",
+        "secret": "past your api secret from binance exchange",
+        "proxy_host": "",
+        "proxy_port": 0
+    }
+
     run_spot_strategy()

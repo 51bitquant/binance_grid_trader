@@ -9,13 +9,6 @@ SETTINGS["log.active"] = True
 SETTINGS["log.level"] = INFO
 SETTINGS["log.console"] = True
 
-futures_settings = {
-    "key": "past your api key from binance exchange",
-    "secret": "past your api secret from binance exchange",
-    "futures_type": "USDT",
-    "proxy_host": "",
-    "proxy_port": 0
-}
 
 
 def run_futures_strategy():
@@ -48,4 +41,14 @@ def run_futures_strategy():
 
 if __name__ == "__main__":
     # the futures script, no ui, if you want to use the window UI, please use the main.py
+    # before running, remember to past your api here.
+
+    futures_settings = {
+        "key": "past your api key from binance exchange",
+        "secret": "past your api secret from binance exchange",
+        "futures_type": "USDT",
+        "proxy_host": "",
+        "proxy_port": 0
+    }
+
     run_futures_strategy()
