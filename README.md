@@ -192,3 +192,8 @@ you don't have a binance account, I'm happy you can use the following
 link to register the account:
 [Binance referral LINK](https://accounts.binance.com/zh-CN/register?ref=ESE80ESH),
 and you will get 20% commission rebate.
+
+## disclaimer
+I don't guarantee that this bot can make profit from market, use it at
+your risk. Don't put your real money into the market before you read the
+codes. Use at your own risk.
