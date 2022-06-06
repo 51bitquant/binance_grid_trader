@@ -7,6 +7,8 @@ Exchange.
 
 [中文文档](READEME-Chinese.md)
 
+[Tutorial Video](https://www.youtube.com/watch?v=Z_BPaRnhNzM)
+
 
 # how-to-use
 First, download the codes. Then create a python virtual env, you can use
