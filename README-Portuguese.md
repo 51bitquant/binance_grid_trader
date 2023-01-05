@@ -8,10 +8,7 @@ Binance_grid_trader é um bot de estratégia de grid negociando na corretora Bin
 você pode usá-lo para negociar qualquer par de criptomoeda disponível na corretora Binance.
 
 
-[中文文档](READEME-Chinese.md)
-
 [Tutorial Video](https://www.youtube.com/watch?v=Z_BPaRnhNzM)
-
 
 # Como usar
 Primeiramente, faça o download do código fonte. Em seguida, crie um ambiente virtual python, você pode usar
