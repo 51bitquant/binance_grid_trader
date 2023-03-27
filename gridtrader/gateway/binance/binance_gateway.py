@@ -352,7 +352,8 @@ class BinanceRestApi(RestClient):
             "price": str(req.price),
             "quantity": str(req.volume),
             "newClientOrderId": orderid,
-            "newOrderRespType": "ACK"
+            "newOrderRespType": "ACK",
+            "selfTradePreventionMode": "EXPIRE_BOTH" # selfTradePreventionMode:  EXPIRE_TAKER, EXPIRE_MAKER, EXPIRE_BOTH, NONE, default is None
         }
 
         self.add_request(

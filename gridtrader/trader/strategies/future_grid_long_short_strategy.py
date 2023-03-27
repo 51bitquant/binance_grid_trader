@@ -8,24 +8,21 @@ from .template import CtaTemplate
 from gridtrader.trader.utility import GridPositionCalculator
 
 
-class FutureGridStrategy(CtaTemplate):
+class FutureGridLongShortStrategy(CtaTemplate):
     """
-    币安合约中性网格
-    策略在震荡行情下表现很好，但是如果发生趋势行情，单次止损会比较大，导致亏损过多。
-
-    免责声明: 本策略仅供测试参考，本人不负有任何责任。使用前请熟悉代码。测试其中的bugs, 请清楚里面的功能后再使用。
-    币安邀请链接: https://www.binancezh.pro/cn/futures/ref/51bitquant
-    合约邀请码：51bitquant
-
+    Long Short Grid Strategy: you may init the grid strategy with Long/Short Position
+    Binance Referral Link: https://www.binance.com/cn/futures/ref/51bitquant
+    Invitee code: 51bitquant
 
     Disclaimer:
     Invest in Crypto currency is high risk. Take care of yourself. I am not responsible for your investment.
-    Binance Referral Link: https://www.binancezh.pro/cn/futures/ref/51bitquant
+    Binance Referral Link: https://www.binance.com/cn/futures/ref/51bitquant
 
     """
     author = "51bitquant"
 
     # parameters
+    initial_volume = 0.0  # if greater than zero, means LONG, if less than zero: means SHORT.
     upper_price = 0.0  # The grid strategy high/upper price 执行策略的最高价.
     bottom_price = 0.0  # The grid strategy low/bottom price 执行策略的最低价.
     grid_number = 100  # grid number 网格的数量.
@@ -40,7 +37,7 @@ class FutureGridStrategy(CtaTemplate):
     step_price = 0.0  # price step between two grid 网格的间隔
     trade_times = 0  # trade times
 
-    parameters = ["upper_price", "bottom_price", "grid_number", "order_volume", "max_open_orders"]
+    parameters = ["initial_volume", "upper_price", "bottom_price", "grid_number", "order_volume", "max_open_orders"]
 
     variables = ["avg_price", "step_price", "trade_times"]
 
