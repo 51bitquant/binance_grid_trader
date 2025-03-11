@@ -2,8 +2,8 @@ from time import sleep
 from logging import INFO
 
 from gridtrader.event import EventEngine
-from gridtrader.trader.setting import SETTINGS
 from gridtrader.trader.engine import MainEngine, CtaEngine
+from gridtrader.trader.setting import SETTINGS
 
 SETTINGS["log.active"] = True
 SETTINGS["log.level"] = INFO

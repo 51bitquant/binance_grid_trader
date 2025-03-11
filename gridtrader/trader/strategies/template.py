@@ -157,20 +157,14 @@ class CtaTemplate(ABC):
         """
         return self.send_order(Direction.LONG, Offset.CLOSE, price, volume)
 
-    def send_order(
-        self,
-        direction: Direction,
-        offset: Offset,
-        price: float,
-        volume: float
-    ):
+    def send_order(self, direction: Direction, offset: Offset, price: float, volume: float):
         """
-        Send a new order.
+        Send a new order with logging.
         """
         if self.trading:
-            vt_orderids = self.cta_engine.send_order(
-                self, direction, offset, price, volume
-            )
+            vt_orderids = self.cta_engine.send_order(self, direction, offset, price, volume)
+            print(
+                f"Order Sent | Direction: {direction}, Offset: {offset}, Price: {price}, Volume: {volume}, Order IDs: {vt_orderids}")
             return vt_orderids
         else:
             return []

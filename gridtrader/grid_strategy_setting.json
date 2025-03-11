@@ -1,26 +1,76 @@
 {
-    "BTCBUSD": {
+    "BTC": {
         "class_name": "FutureGridStrategy",
-        "vt_symbol": "BTCBUSD.BINANCE",
+        "vt_symbol": "BTCUSDT.BINANCE",
         "setting": {
-            "upper_price": 42000,
-            "bottom_price": 39000,
-            "grid_number": 100,
-            "order_volume": 0.001,
-            "max_open_orders": 5
+            "upper_price": 110000.0,
+            "bottom_price": 96000.0,
+            "max_open_orders": 5,
+            "order_amount": 30000,
+            "start_price": 0.0,
+            "direction_int": 1
         }
     },
-    "btcbusd": {
-        "class_name": "SpotGridStrategy",
-        "vt_symbol": "btcbusd.BINANCE",
+    "AVAAI": {
+        "class_name": "FutureGridStrategy",
+        "vt_symbol": "AVAAIUSDT.BINANCE",
         "setting": {
-            "class_name": "SpotGridStrategy",
-            "upper_price": 42000.0,
-            "bottom_price": 32000.0,
-            "grid_number": 50,
-            "order_volume": 0.001,
-            "invest_coin": "BUSD",
-            "max_open_orders": 5
+            "upper_price": 0.1,
+            "bottom_price": 0.048,
+            "max_open_orders": 5,
+            "order_amount": 5000,
+            "start_price": 0.0,
+            "direction_int": 1
+        }
+    },
+    "PENGU": {
+        "class_name": "FutureGridStrategy",
+        "vt_symbol": "PENGUUSDT.BINANCE",
+        "setting": {
+            "upper_price": 0.028,
+            "bottom_price": 0.017,
+            "max_open_orders": 5,
+            "order_amount": 12000,
+            "start_price": 0.0,
+            "direction_int": 1
+        }
+    },
+    "FARTCOIN": {
+        "class_name": "FutureGridStrategy",
+        "vt_symbol": "FARTCOINUSDT.BINANCE",
+        "setting": {
+            "class_name": "FutureGridStrategy",
+            "upper_price": 1.5,
+            "bottom_price": 0.85,
+            "max_open_orders": 5,
+            "order_amount": 2500,
+            "start_price": 0.0,
+            "direction_int": 1
+        }
+    },
+    "AI16Z": {
+        "class_name": "FutureGridStrategy",
+        "vt_symbol": "AI16ZUSDT.BINANCE",
+        "setting": {
+            "upper_price": 1.2,
+            "bottom_price": 0.6,
+            "max_open_orders": 5,
+            "order_amount": 6000,
+            "start_price": 0.0,
+            "direction_int": 1
+        }
+    },
+    "RUNE": {
+        "class_name": "FutureGridStrategy",
+        "vt_symbol": "RUNEUSDT.BINANCE",
+        "setting": {
+            "class_name": "FutureGridStrategy",
+            "upper_price": 2.0,
+            "bottom_price": 1.35,
+            "max_open_orders": 5,
+            "order_amount": 5000,
+            "start_price": 0.0,
+            "direction_int": 1
         }
     }
 }
