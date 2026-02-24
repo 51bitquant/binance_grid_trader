@@ -204,6 +204,7 @@ class SpotGridStrategy(CtaTemplate):
 
                 for i in range(self.max_open_orders):
                     price = self.bottom_price + (mid_count - i - 1) * self.step_price
+                    price = float(floor_to(price, self.contract_data.price_tick))
                     if price < self.bottom_price:
                         return
 
@@ -216,6 +217,7 @@ class SpotGridStrategy(CtaTemplate):
             if len(self.short_orders_dict.keys()) == 0:
                 for i in range(self.max_open_orders):
                     price = self.bottom_price + (mid_count + i + 1) * self.step_price
+                    price = float(floor_to(price, self.contract_data.price_tick))
                     if price > self.upper_price:
                         return
 
@@ -243,7 +245,7 @@ class SpotGridStrategy(CtaTemplate):
                 self.trade_times += 1
 
                 short_price = float(order.price) + float(self.step_price)
-
+                short_price = float(floor_to(short_price, self.contract_data.price_tick))
                 if short_price <= self.upper_price:
 
                     orders_ids = self.sell(short_price, self.order_volume)
@@ -254,6 +256,7 @@ class SpotGridStrategy(CtaTemplate):
                 if len(self.long_orders_dict.keys()) < self.max_open_orders:
                     count = len(self.long_orders_dict.keys()) + 1
                     long_price = float(order.price) - float(self.step_price) * count
+                    long_price = float(floor_to(long_price, self.contract_data.price_tick))
 
                     if long_price >= self.bottom_price:
                         orders_ids = self.buy(long_price, self.order_volume)
@@ -265,6 +268,7 @@ class SpotGridStrategy(CtaTemplate):
 
                 self.trade_times += 1
                 long_price = float(order.price) - float(self.step_price)
+                long_price = float(floor_to(long_price, self.contract_data.price_tick))
 
                 if long_price >= self.bottom_price:
                     orders_ids = self.buy(long_price, self.order_volume)
@@ -274,6 +278,7 @@ class SpotGridStrategy(CtaTemplate):
                 if len(self.short_orders_dict.keys()) < self.max_open_orders:
                     count = len(self.short_orders_dict.keys()) + 1
                     short_price = float(order.price) + float(self.step_price) * count
+                    short_price = float(floor_to(short_price, self.contract_data.price_tick))
 
                     if short_price <= self.upper_price:
                         orders_ids = self.sell(short_price, self.order_volume)
