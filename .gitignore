@@ -2,11 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
-*.idea/*
-*.idea
-# C extensions
 *.so
-.DS_Store
 
 # Distribution / packaging
 .Python
@@ -27,10 +23,71 @@ wheels/
 *.egg
 MANIFEST
 
+# Virtual Environment
+.venv/
+venv/
+env/
+ENV/
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# PyCharm
+.idea/
+.idea_modules/
+
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
 # PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Local development settings
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Mac OS specific
+.DS_Store
+.AppleDouble
+.LSOverride
 *.spec
 
 # Installer logs
