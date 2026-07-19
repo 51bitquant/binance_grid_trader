@@ -208,6 +208,79 @@ class MainEngine:
         for gateway in self.gateways.values():
             gateway.query_account()
 
+    # NOTE: get_tick/get_position/get_account/get_contract/get_all_positions/
+    # get_all_accounts/get_all_contracts/get_all_active_orders/get_active_order
+    # are also assigned directly onto instances by OmsEngine.add_function() at
+    # runtime. These declarations exist so static analysis / IDEs recognize the
+    # attributes; OmsEngine's instance-level assignment takes precedence at
+    # runtime, so behavior is unchanged. If OmsEngine has not been added yet,
+    # these fall back to a "Missing Engine" log via get_engine().
+
+    def get_tick(self, vt_symbol: str) -> Optional[TickData]:
+        """
+        Get latest market tick data by vt_symbol.
+        """
+        oms_engine = self.get_engine("oms")
+        return oms_engine.get_tick(vt_symbol) if oms_engine else None
+
+    def get_position(self, vt_positionid: str) -> Optional[PositionData]:
+        """
+        Get latest position data by vt_positionid.
+        """
+        oms_engine = self.get_engine("oms")
+        return oms_engine.get_position(vt_positionid) if oms_engine else None
+
+    def get_account(self, vt_accountid: str) -> Optional[AccountData]:
+        """
+        Get latest account data by vt_accountid.
+        """
+        oms_engine = self.get_engine("oms")
+        return oms_engine.get_account(vt_accountid) if oms_engine else None
+
+    def get_contract(self, vt_symbol: str) -> Optional[ContractData]:
+        """
+        Get contract data by vt_symbol.
+        """
+        oms_engine = self.get_engine("oms")
+        return oms_engine.get_contract(vt_symbol) if oms_engine else None
+
+    def get_all_positions(self) -> List[PositionData]:
+        """
+        Get all position data.
+        """
+        oms_engine = self.get_engine("oms")
+        return oms_engine.get_all_positions() if oms_engine else []
+
+    def get_all_accounts(self) -> List[AccountData]:
+        """
+        Get all account data.
+        """
+        oms_engine = self.get_engine("oms")
+        return oms_engine.get_all_accounts() if oms_engine else []
+
+    def get_all_contracts(self) -> List[ContractData]:
+        """
+        Get all contract data.
+        """
+        oms_engine = self.get_engine("oms")
+        return oms_engine.get_all_contracts() if oms_engine else []
+
+    def get_all_active_orders(self, vt_symbol: str = "") -> List[OrderData]:
+        """
+        Get all active orders by vt_symbol.
+
+        If vt_symbol is empty, return all active orders.
+        """
+        oms_engine = self.get_engine("oms")
+        return oms_engine.get_all_active_orders(vt_symbol) if oms_engine else []
+
+    def get_active_order(self, vt_orderid) -> Optional[OrderData]:
+        """
+        Get an active order by vt_orderid.
+        """
+        oms_engine = self.get_engine("oms")
+        return oms_engine.get_active_order(vt_orderid) if oms_engine else None
+
     def close(self) -> None:
         """
         Make sure every gateway and app is closed properly before
